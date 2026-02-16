@@ -8,6 +8,7 @@ import { buildAdjacencyGraph, findRelationshipPath } from '../utils/pathfinding'
 import useIsMobile from '../hooks/useIsMobile';
 
 import '@xyflow/react/dist/style.css';
+import './NodeFlow.css';
 
 
 const nodeTypes = { 
@@ -70,6 +71,10 @@ export default function NodeFlow() {
     });
   };
 
+  const clearSelectionBtnOnClick = () => {
+    setSelection([]);
+  };
+
   // Highlight the Path Visually
   // We use a derived state for rendering so we don't mutate the actual data
   const highlightedEdges = edges.map(edge => {
@@ -111,6 +116,7 @@ export default function NodeFlow() {
       height: '100vh',
       // border: '4px solid red'
     }}>
+      {selection.length > 0 && <button id='clearSelectionBtn' onClick={clearSelectionBtnOnClick}>Clear Selection</button> }
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={highlightedNodes} // Use the highlighted versions

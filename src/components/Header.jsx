@@ -1,8 +1,9 @@
 import React from 'react';
 
 const headerStyles = {
-  height: '60px', // Fixed height
-  backgroundColor: 'white',
+  height: '45px', // Fixed height
+  flexShrink: 0,
+  backgroundColor: 'black',
   borderBottom: '1px solid #ddd',
   display: 'flex',
   alignItems: 'center',
@@ -11,7 +12,6 @@ const headerStyles = {
   boxSizing: 'border-box',
   zIndex: 10, // Ensure it sits above the canvas
   position: 'relative',
-  
 };
 
 const titleStyles = {
@@ -29,30 +29,31 @@ const buttonGroupStyles = {
 };
 
 const buttonStyles = {
-  padding: '8px 16px',
+  padding: '8px 14px',
   borderRadius: '4px',
   border: '1px solid #ddd',
   backgroundColor: 'white',
   cursor: 'pointer',
   fontSize: '14px',
-  transition: 'all 0.2s'
+  transition: 'all 0.2s',
+  margin: '7px 3px'
 };
 
 export default function Header() {
   return (
     <header style={headerStyles}>
       <div style={titleStyles}>
-        {/* You can add an SVG logo here later */}
-        <span>🌳 My Family Tree</span>
+        <span style={{ color: 'white' }}>🌳 My Family Tree</span>
       </div>
 
       <div style={buttonGroupStyles}>
-        <button style={buttonStyles}>Export Image</button>
+        {/* <button style={buttonStyles}>Export Image</button>
         <button 
           style={{ ...buttonStyles, backgroundColor: '#2563eb', color: 'white', border: 'none' }}
         >
           Add Member
-        </button>
+        </button> */}
+        {/* <button style={buttonStyles}>Clear Selection</button> */}
       </div>
     </header>
   );

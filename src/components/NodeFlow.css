@@ -1,0 +1,14 @@
+#clearSelectionBtn {
+  color: white;
+  background-color: #2563eb;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  margin: 7px 3px;
+  position: fixed;
+  top: 50px;
+  left: 10px;
+  z-index: 100;
+}
