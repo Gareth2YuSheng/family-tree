@@ -36,7 +36,7 @@ export default function NodeFlow() {
 
   // Fetch Data
   useEffect(() => {
-    const url = `https://script.google.com/macros/s/AKfycbxjUmGagHMAIJhcRZAvAWVXvg1ycX7yrlgX8Bf4Mxtxufw4lEPVjNOdPe5yKq2Td1eIsQ/exec?action=read`;
+    const url = `${import.meta.env.VITE_API_URL}?action=read`;
     const loadData = async () => {
       setIsLoading(true);
       setError(null);
