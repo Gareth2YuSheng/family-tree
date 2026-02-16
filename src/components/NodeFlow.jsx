@@ -2,9 +2,13 @@ import { Background, Controls, ReactFlow, useEdgesState, useNodesState } from '@
 import React, { useState, useEffect, useMemo } from 'react';
 import PersonNode from './nodes/PersonNode';
 import UnionNode from './nodes/UnionNode';
-import fetchFake from './testFetch';
+import Spinner from './Spinner';
+import PersonSearch from './PersonSearch';
+
 import { getLayoutedElements } from '../utils/utils';
 import { buildAdjacencyGraph, findRelationshipPath } from '../utils/pathfinding';
+import { fetchData } from '../utils/api';
+import fetchFake from '../utils/testFetch';
 import useIsMobile from '../hooks/useIsMobile';
 
 import '@xyflow/react/dist/style.css';
@@ -23,16 +27,40 @@ export default function NodeFlow() {
   const [selectedPath, setSelectedPath] = useState([]); // Array of IDs in the path
   const [selection, setSelection] = useState([]); // [firstNodeId, secondNodeId]
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [rfInstance, setRfInstance] = useState(null);
+
   const isMobile = useIsMobile();
 
   // Fetch Data
   useEffect(() => {
-    const response = fetchFake();
-    // const 
-    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(response.data);
+    const url = `https://script.google.com/macros/s/AKfycbxjUmGagHMAIJhcRZAvAWVXvg1ycX7yrlgX8Bf4Mxtxufw4lEPVjNOdPe5yKq2Td1eIsQ/exec?action=read`;
+    const loadData = async () => {
+      setIsLoading(true);
+      setError(null);
 
-    setNodes(layoutedNodes);
-    setEdges(layoutedEdges);
+      try {
+        const result = await fetchData(url);
+        console.log(result.data);
+        const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(result.data);
+        setNodes(layoutedNodes);
+        setEdges(layoutedEdges);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+
+    // For Testing
+    // const fakerResponse = fetchFake();
+    // const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(fakerResponse.data);
+    // setNodes(layoutedNodes);
+    // setEdges(layoutedEdges);
   }, []);
 
   // This constructs the graph ONLY when 'nodes' or 'edges' change.
@@ -75,6 +103,22 @@ export default function NodeFlow() {
     setSelection([]);
   };
 
+  const handleSearchSelect = (node) => {
+    // Select the node (visual highlight)
+    onNodeClick(null, node);
+
+    // Zoom to node if instance exists
+    if (rfInstance) {
+      const { position, width, height } = node;
+      // Center the view on the node
+      const x = position.x + (width || 140) / 2;
+      const y = position.y + (height || 140) / 2;
+      const zoom = 1.2;
+
+      rfInstance.setCenter(x, y, { zoom, duration: 1000 });
+    }
+  };
+
   // Highlight the Path Visually
   // We use a derived state for rendering so we don't mutate the actual data
   const highlightedEdges = edges.map(edge => {
@@ -86,7 +130,7 @@ export default function NodeFlow() {
       ...edge,
       style: {
         ...edge.style,
-        stroke: isPathEdge ? '#2563eb' : '#b1b1b7', // Blue if active, Grey if not
+        stroke: isPathEdge ? '#2563eb' : '#272626', // Blue if active, Grey if not
         strokeWidth: isPathEdge ? 3 : 1.5,
         opacity: isPathEdge ? 1 : 0.3, // Fade out non-path edges
       },
@@ -110,18 +154,39 @@ export default function NodeFlow() {
      };
   });
 
+  if (isLoading) return <div><Spinner /></div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
-    <div style={{ 
-      width: '100vw', 
-      height: '100vh',
-      // border: '4px solid red'
-    }}>
-      {selection.length > 0 && <button id='clearSelectionBtn' onClick={clearSelectionBtnOnClick}>Clear Selection</button> }
+    <div 
+      className="node-flow-wrapper"
+      // style={{ 
+      //   width: '100vw', 
+      //   height: '100vh',
+      //   // border: '4px solid red'
+      // }}
+    >
+      {/* Top Right Controls */}
+      <div className="controls-container">
+        <PersonSearch 
+          nodes={nodes} 
+          onSelect={handleSearchSelect} 
+        />
+
+        {selection.length > 0 && 
+      <button 
+        id='clearSelectionBtn' 
+        // className='clear-btn'
+        onClick={clearSelectionBtnOnClick}>
+          Clear Selection
+        </button> }
+      </div>
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={highlightedNodes} // Use the highlighted versions
         edges={highlightedEdges}
         onNodeClick={onNodeClick}
+        onInit={setRfInstance}
 
         // --- DESKTOP BEHAVIOR (Standard) ---
         // Scroll = Zoom

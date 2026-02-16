@@ -4,11 +4,48 @@
   border: none;
   cursor: pointer;
   font-size: 16px;
-  padding: 8px 14px;
+  padding: 7px 14px;
   border-radius: 4px;
-  margin: 7px 3px;
-  position: fixed;
+  height: 35px;
+  /* margin: 7px 3px; */
+  /* position: fixed;
   top: 50px;
   left: 10px;
-  z-index: 100;
+  z-index: 100; */
 }
+
+.node-flow-wrapper {
+  width: 100vw;
+  height: 100vh;
+  position: relative; /* Needed for absolute positioning context */
+}
+
+/* Top Right Controls Container */
+.controls-container {
+  position: fixed;
+  top: 55px;
+  left: 10px;
+  z-index: 100;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Clear Button Style */
+/* .clear-btn {
+  color: white;
+  background-color: #d9534f; 
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 12px; 
+  border-radius: 4px;
+  height: 35px; 
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.clear-btn:hover {
+  background-color: #c9302c;
+} */
