@@ -1,0 +1,26 @@
+#root {
+  /* max-width: 1280px; */
+  /* margin: 0 auto;
+  padding: 2rem; */
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 1. Reset the browser defaults */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+/* 3. Optional: Global "Sanity" Reset *//* Makes sizing logical (includes border in width) */
+/* * {
+  box-sizing: border-box; 
+} */
+

@@ -1,0 +1,29 @@
+.node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+}
+
+.nodeCircle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%; /* Makes it a perfect circle */
+  background-color: #ddd; /* Placeholder gray */
+  border: 2px solid #555;
+  overflow: hidden; /* Crops the image to the circle */
+  margin-bottom: -10px; /* Pulls the name up slightly (overlap effect) */
+  z-index: 2; /* Ensures circle stays on top of the box */
+}
+
+.nodeLabel {
+  background-color: white;
+  border: 1px solid #777;
+  border-radius: 4px;
+  padding: 12px 8px 4px 8px; /* Extra top padding for the overlap */
+  text-align: center;
+  font-size: 12px;
+  width: 100%;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
